@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission Japon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one column phone app, hero countdown on top, 4 tabs at the bottom. */
+:root{
+  --bg:#f3f2ee; --card:#ffffff; --ink:#1b1f2a; --muted:#6a6f7c; --line:#e1dfd8;
+  --accent:#d8342c; --accent-ink:#ffffff; --good:#3e7d5a; --soft:#ece9e1;
+  --f-display:'Shippori Mincho','Hiragino Mincho ProN',serif;
+  --f-body:'Zen Kaku Gothic New','Hiragino Sans',system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161d; --card:#1d2029; --ink:#eceae4; --muted:#9a9eab; --line:#2c303c;
+    --accent:#ef5a50; --accent-ink:#14161d; --good:#6fbf93; --soft:#262a35; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14161d; --card:#1d2029; --ink:#eceae4; --muted:#9a9eab; --line:#2c303c;
+  --accent:#ef5a50; --accent-ink:#14161d; --good:#6fbf93; --soft:#262a35; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-text-size-adjust:100%}
+body{padding-bottom:84px}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.hero{display:flex;gap:16px;align-items:center;padding:20px;background:var(--ink);color:var(--bg);border-radius:20px;position:relative;overflow:hidden}
+.sun{width:92px;height:92px;flex:none;border-radius:50%;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink);text-align:center;line-height:1}
+.sun b{font-family:var(--f-display);font-size:34px;font-weight:800;display:block;font-variant-numeric:tabular-nums}
+.sun span{font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{font-size:22px;font-weight:800}
+.hero p{margin:4px 0 0;font-size:14px;opacity:.8}
+.hero .link{background:none;border:0;padding:0;margin-top:8px;font-size:13px;color:inherit;opacity:.75;text-decoration:underline}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.stat b{font-family:var(--f-display);font-size:24px;display:block;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.card h2{font-size:18px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.bar{height:10px;background:var(--soft);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.bar.good i{background:var(--good)}
+.row{display:flex;gap:8px;align-items:center}
+.row.between{justify-content:space-between}
+.mission{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--soft);border:2px solid transparent;border-radius:14px;padding:14px;margin-top:8px}
+.mission .box{width:28px;height:28px;flex:none;border-radius:50%;border:2px solid var(--muted);display:grid;place-items:center;font-weight:700;color:transparent}
+.mission.done{border-color:var(--good)}
+.mission.done .box{background:var(--good);border-color:var(--good);color:#fff}
+.mission.done .t{text-decoration:line-through;opacity:.6}
+.mission .t{font-weight:700;display:block}
+.mission .m{font-size:13px;color:var(--muted)}
+.xp{margin-left:auto;font-size:12px;font-weight:700;color:var(--accent);white-space:nowrap}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--soft)}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:12px 16px;font-weight:700}
+.btn.ghost{background:var(--soft);color:var(--ink)}
+.btn.small{padding:8px 12px;font-size:14px}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{min-height:64px;resize:vertical}
+label{font-size:13px;color:var(--muted);display:block;margin:10px 0 4px}
+.moods{display:flex;gap:6px}
+.moods button{flex:1;padding:10px 0;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-weight:700}
+.moods button.on{background:var(--ink);color:var(--bg)}
+.item{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item .grow{flex:1;min-width:0}
+.item .grow b{display:block;overflow-wrap:anywhere}
+.item small{color:var(--muted)}
+.chk{width:26px;height:26px;flex:none;border-radius:8px;border:2px solid var(--muted);background:none;display:grid;place-items:center;color:transparent;font-weight:700;padding:0}
+.chk.on{background:var(--good);border-color:var(--good);color:#fff}
+.x{background:none;border:0;color:var(--muted);font-size:20px;padding:4px 8px}
+.quote{font-family:var(--f-display);font-size:18px;line-height:1.35}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+nav div{display:flex;width:100%;max-width:560px}
+nav button{flex:1;background:none;border:0;padding:14px 4px;font-size:13px;font-weight:700;color:var(--muted);border-top:3px solid transparent}
+nav button.on{color:var(--ink);border-top-color:var(--accent)}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90%;text-align:center}
+.toast.show{opacity:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<nav><div id="nav"></div></nav>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(function(){
+var KEY='mission-japon-v1';
+var LEVELS=[[0,'Narita','Tu as atterri. Premier pas.'],[100,'Tokyo','Le rythme s’installe.'],[250,'Kamakura','Tu avances calmement.'],[450,'Nagoya','La routine tient.'],[700,'Kyoto','Tu es dans le dur, et tu tiens.'],[1000,'Osaka','Le dossier prend forme.'],[1400,'Hiroshima','Presque prêt à partir.'],[1900,'Hokkaido','Billet en main.']];
+var MISSIONS=[
+ {id:'job',t:'Une candidature',m:'Minimum : lire une offre et noter l’entreprise.',xp:15},
+ {id:'jp',t:'Japonais, 15 minutes',m:'Minimum : 5 minutes ou 5 mots.',xp:10},
+ {id:'move',t:'Bouger, 20 minutes',m:'Minimum : sortir marcher 10 minutes.',xp:10}
+];
+var VISA=['Vérifier les conditions sur le site de l’ambassade du Japon en France','Passeport valide (au moins 6 mois après le retour prévu)','Rassembler les justificatifs de ressources','Préparer le dossier de visa Vacances-Travail','Déposer la demande de visa','Recevoir le visa','Assurance santé et rapatriement','Réserver le billet d’avion','Première semaine de logement (guesthouse ou share house)','Carte SIM ou eSIM pour le Japon'];
+var JP=['Hiragana (46 signes)','Katakana (46 signes)','50 mots de survie','Se présenter à l’oral','100 kanji','Niveau JLPT N5'];
+var STATUS=['Envoyée','Relancée','Entretien','Refus','Offre'];
+var QUOTES=['Une candidature de plus, c’est un jour de plus vers Tokyo.','Tu n’as pas besoin d’être motivé. Il suffit de commencer 5 minutes.','Chaque jour validé est une preuve que tu t’y mets.','Le Japon ne se réalise pas d’un coup, il se réalise tous les jours.','Un petit pas aujourd’hui vaut mieux qu’un grand plan demain.'];
+
+function today(){var d=new Date();return fmt(d)}
+function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function addDays(s,n){var p=s.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]+n);return fmt(d)}
+
+var def={target:'2027-11-01',goal:4000,saved:0,xp:0,days:{},checkins:{},apps:[],visa:{},jp:{},tab:'today',reason:'Vivre au Japon.',mood:{}};
+var S=load();
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);for(var k in def)if(!(k in o))o[k]=def[k];return o}}catch(e){}return JSON.parse(JSON.stringify(def))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('show')},1800)}
+function gain(n,msg){S.xp+=n;toast('+'+n+' XP'+(msg?' · '+msg:''))}
+
+function level(){var i=0;for(var k=0;k<LEVELS.length;k++)if(S.xp>=LEVELS[k][0])i=k;var next=LEVELS[i+1];return{i:i,name:LEVELS[i][1],line:LEVELS[i][2],from:LEVELS[i][0],to:next?next[0]:null,nextName:next?next[1]:null}}
+function doneToday(){var d=S.days[today()]||{};return MISSIONS.filter(function(m){return d[m.id]}).length}
+function validated(ds){var d=S.days[ds];if(!d)return false;for(var k in d)if(d[k])return true;return false}
+function streak(){var n=0,grace=1,ds=today(),first=true;
+  for(var i=0;i<400;i++){
+    if(validated(ds)){n++}
+    else if(first){/* today not done yet: no penalty */}
+    else if(grace>0&&validated(addDays(ds,-1))){grace--}
+    else break;
+    first=false;ds=addDays(ds,-1)}
+  return n}
+function daysLeft(){var p=S.target.split('-');var t=new Date(+p[0],+p[1]-1,+p[2]);var n=new Date();n.setHours(0,0,0,0);return Math.max(0,Math.round((t-n)/86400000))}
+function pct(a,b){return b?Math.max(0,Math.min(100,Math.round(a/b*100))):0}
+function progress(){
+  var visa=pct(Object.keys(S.visa).filter(function(k){return S.visa[k]}).length,VISA.length);
+  var jp=pct(Object.keys(S.jp).filter(function(k){return S.jp[k]}).length,JP.length);
+  var cash=pct(S.saved,S.goal);
+  var apps=pct(S.apps.length,50);
+  return{visa:visa,jp:jp,cash:cash,apps:apps,all:Math.round((visa+jp+cash+apps)/4)}}
+
+var TABS=[['today','Aujourd’hui'],['jobs','Candidatures'],['japan','Japon'],['log','Journal']];
+
+function header(){
+  var L=level(),P=progress(),dl=daysLeft();
+  var q=QUOTES[(new Date().getDate())%QUOTES.length];
+  return '<div class="hero"><div class="sun"><div><b>'+dl+'</b><span>jours</span></div></div><div><h1>Mission Japon</h1><p>'+esc(S.reason)+'</p><p>Niveau '+(L.i+1)+' · '+esc(L.name)+' · '+P.all+'% prêt</p><button class="link" data-act="date">Départ visé : '+frDate(S.target)+' (modifier)</button></div></div>'+
+  '<div class="stats"><div class="stat"><b>'+streak()+'</b><span>jours de série</span></div><div class="stat"><b>'+S.xp+'</b><span>XP</span></div><div class="stat"><b>'+S.apps.length+'</b><span>candidatures</span></div></div>'}
+function frDate(s){var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
+
+function viewToday(){
+  var t=today(),d=S.days[t]||{},L=level(),n=doneToday();
+  var h='<div class="card"><p class="quote" style="margin:0">'+esc(QUOTES[(new Date().getDate())%QUOTES.length])+'</p></div>';
+  h+='<div class="card"><div class="row between"><h2>Missions du jour</h2><span class="pill">'+n+' / '+MISSIONS.length+'</span></div><p class="sub">Le minimum compte. Une seule mission valide ta journée.</p>';
+  MISSIONS.forEach(function(m){h+='<button class="mission'+(d[m.id]?' done':'')+'" data-act="mission" data-id="'+m.id+'" aria-pressed="'+(!!d[m.id])+'"><span class="box">✓</span><span><span class="t">'+m.t+'</span><span class="m">'+m.m+'</span></span><span class="xp">+'+m.xp+'</span></button>'});
+  if(n===MISSIONS.length)h+='<p class="sub" style="margin-top:12px;color:var(--good);font-weight:700">Journée complète. Bravo.</p>';
+  h+='</div>';
+  var hr=new Date().getHours(),ci=S.checkins[t]||{};
+  var slot=hr<15?'morning':'evening';
+  h+='<div class="card"><h2>'+(slot==='morning'?'Check-in du matin':'Check-in du soir')+'</h2>';
+  if(slot==='morning'){
+    h+='<p class="sub">30 secondes pour te lancer.</p><label for="ci-intent">Ma priorité aujourd’hui</label><input id="ci-intent" value="'+esc(ci.intent||'')+'" placeholder="Ex. envoyer 2 candidatures">';
+  }else{
+    h+='<p class="sub">Note au moins une victoire, même minuscule.</p><label for="ci-win">Ma victoire du jour</label><input id="ci-win" value="'+esc(ci.win||'')+'" placeholder="Ex. j’ai envoyé un CV">';
+  }
+  h+='<label>Mon énergie</label><div class="moods" role="group" aria-label="Energie">';
+  for(var i=1;i<=5;i++)h+='<button data-act="mood" data-v="'+i+'" class="'+(ci.mood===i?'on':'')+'">'+i+'</button>';
+  h+='</div><div style="margin-top:12px"><button class="btn small" data-act="checkin" data-slot="'+slot+'">Enregistrer</button></div></div>';
+  h+='<div class="card"><h2>Ma raison</h2><p class="sub">Relis-la quand ça coince.</p><textarea id="reason" aria-label="Ma raison">'+esc(S.reason)+'</textarea><div style="margin-top:8px"><button class="btn ghost small" data-act="reason">Mettre à jour</button></div></div>';
+  return h}
+
+function viewJobs(){
+  var h='<div class="card"><h2>Nouvelle candidature</h2><p class="sub">Chaque envoi est une victoire, réponse ou pas.</p><label for="j-co">Entreprise</label><input id="j-co" placeholder="Nom de l’entreprise"><label for="j-role">Poste</label><input id="j-role" placeholder="Intitulé du poste"><div style="margin-top:12px"><button class="btn" data-act="addapp">Ajouter (+15 XP)</button></div></div>';
+  h+='<div class="card"><div class="row between"><h2>Mes candidatures</h2><span class="pill">'+S.apps.length+'</span></div>';
+  var P=progress();
+  h+='<p class="sub">Objectif : 50 candidatures</p><div class="bar"><i style="width:'+P.apps+'%"></i></div><div style="height:8px"></div>';
+  if(!S.apps.length)h+='<p class="sub">Aucune pour l’instant. La première est la plus dure.</p>';
+  S.apps.slice().reverse().forEach(function(a,ri){var i=S.apps.length-1-ri;
+    h+='<div class="item"><div class="grow"><b>'+esc(a.co)+'</b><small>'+esc(a.role||'')+' · '+frDate(a.date)+'</small></div><select data-act="status" data-i="'+i+'" aria-label="Statut" style="width:auto">'+STATUS.map(function(s){return '<option'+(s===a.st?' selected':'')+'>'+s+'</option>'}).join('')+'</select><button class="x" data-act="delapp" data-i="'+i+'" aria-label="Supprimer">×</button></div>'});
+  h+='</div>';return h}
+
+function viewJapan(){
+  var P=progress(),L=level();
+  var h='<div class="card"><h2>Progression globale</h2><p class="sub">'+P.all+'% prêt pour le départ</p><div class="bar"><i style="width:'+P.all+'%"></i></div>';
+  h+='<div class="grid2" style="margin-top:12px"><div><small>Cagnotte</small><div class="bar good"><i style="width:'+P.cash+'%"></i></div></div><div><small>Visa</small><div class="bar good"><i style="width:'+P.visa+'%"></i></div></div><div><small>Japonais</small><div class="bar good"><i style="width:'+P.jp+'%"></i></div></div><div><small>Candidatures</small><div class="bar good"><i style="width:'+P.apps+'%"></i></div></div></div></div>';
+  h+='<div class="card"><h2>Niveau : '+esc(L.name)+'</h2><p class="sub">'+esc(L.line)+'</p>';
+  if(L.to){h+='<div class="bar"><i style="width:'+pct(S.xp-L.from,L.to-L.from)+'%"></i></div><p class="sub" style="margin-top:6px">'+(L.to-S.xp)+' XP avant '+esc(L.nextName)+'</p>'}else h+='<p class="sub">Niveau maximum atteint.</p>';
+  h+='</div>';
+  h+='<div class="card"><h2>Cagnotte Japon</h2><p class="sub">'+S.saved+' € sur '+S.goal+' €</p><div class="bar good"><i style="width:'+P.cash+'%"></i></div>';
+  h+='<div class="grid2" style="margin-top:12px"><div><label for="c-add">Ajouter (€)</label><input id="c-add" type="number" inputmode="decimal" min="0" placeholder="50"></div><div><label for="c-goal">Objectif (€)</label><input id="c-goal" type="number" inputmode="decimal" min="0" value="'+S.goal+'"></div></div><div style="margin-top:12px" class="row"><button class="btn small" data-act="addcash">Ajouter</button><button class="btn ghost small" data-act="goal">Changer l’objectif</button></div></div>';
+  h+='<div class="card"><h2>Parcours Vacances-Travail</h2><p class="sub">Vérifie toujours les conditions à jour sur le site officiel de l’ambassade. +20 XP par étape.</p>';
+  VISA.forEach(function(v,i){h+=chk('visa',i,v)});h+='</div>';
+  h+='<div class="card"><h2>Japonais</h2><p class="sub">Jalons à cocher. +20 XP chacun.</p>';
+  JP.forEach(function(v,i){h+=chk('jp',i,v)});h+='</div>';
+  return h}
+function chk(grp,i,label){var on=S[grp][i];return '<div class="item"><button class="chk'+(on?' on':'')+'" data-act="chk" data-g="'+grp+'" data-i="'+i+'" aria-pressed="'+(!!on)+'" aria-label="'+esc(label)+'">✓</button><div class="grow">'+esc(label)+'</div></div>'}
+
+function viewLog(){
+  var keys=Object.keys(S.checkins).sort().reverse().slice(0,30);
+  var h='<div class="card"><h2>Mes victoires</h2><p class="sub">Relis ceci quand tu doutes.</p>';
+  var any=false;
+  keys.forEach(function(k){var c=S.checkins[k];if(c.win||c.intent){any=true;h+='<div class="item"><div class="grow"><b>'+esc(c.win||c.intent)+'</b><small>'+frDate(k)+(c.mood?' · énergie '+c.mood+'/5':'')+'</small></div></div>'}});
+  if(!any)h+='<p class="sub">Rien encore. Fais ton premier check-in.</p>';
+  h+='</div>';
+  var last7=[];for(var i=6;i>=0;i--){var ds=addDays(today(),-i);last7.push(ds)}
+  h+='<div class="card"><h2>7 derniers jours</h2><div class="row" style="margin-top:8px">';
+  last7.forEach(function(ds){var v=validated(ds);var p=ds.split('-');h+='<div style="flex:1;text-align:center"><div style="height:36px;border-radius:8px;background:'+(v?'var(--good)':'var(--soft)')+'"></div><small>'+p[2]+'</small></div>'});
+  h+='</div></div>';
+  h+='<div class="card"><button class="btn ghost small" data-act="reset">Tout réinitialiser</button></div>';
+  return h}
+
+function render(){
+  var v=S.tab==='today'?viewToday():S.tab==='jobs'?viewJobs():S.tab==='japan'?viewJapan():viewLog();
+  document.getElementById('app').innerHTML=header()+v;
+  document.getElementById('nav').innerHTML=TABS.map(function(t){return '<button data-act="tab" data-t="'+t[0]+'" class="'+(S.tab===t[0]?'on':'')+'">'+t[1]+'</button>'}).join('');
+  save()}
+
+var tmpMood=null;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+  if(a==='tab'){S.tab=b.dataset.t;render();window.scrollTo(0,0)}
+  else if(a==='mission'){var t=today();S.days[t]=S.days[t]||{};var id=b.dataset.id;var m=MISSIONS.filter(function(x){return x.id===id})[0];
+    if(S.days[t][id]){S.days[t][id]=false;S.xp=Math.max(0,S.xp-m.xp)}else{S.days[t][id]=true;gain(m.xp,m.t)}render()}
+  else if(a==='mood'){tmpMood=+b.dataset.v;var t2=today();S.checkins[t2]=S.checkins[t2]||{};S.checkins[t2].mood=tmpMood;render()}
+  else if(a==='checkin'){var t3=today();var c=S.checkins[t3]=S.checkins[t3]||{};var f=document.getElementById(b.dataset.slot==='morning'?'ci-intent':'ci-win');
+    var first=!(c.intent||c.win);if(b.dataset.slot==='morning')c.intent=f.value.trim();else c.win=f.value.trim();
+    if(first&&(c.intent||c.win))gain(5,'check-in');else toast('Enregistré');render()}
+  else if(a==='reason'){var r=document.getElementById('reason').value.trim();if(r){S.reason=r;toast('Raison mise à jour');render()}}
+  else if(a==='addapp'){var co=document.getElementById('j-co').value.trim();if(!co){toast('Ajoute le nom de l’entreprise');return}
+    S.apps.push({co:co,role:document.getElementById('j-role').value.trim(),date:today(),st:'Envoyée'});
+    var t4=today();S.days[t4]=S.days[t4]||{};S.days[t4].job=true;gain(15,'candidature envoyée');render()}
+  else if(a==='delapp'){S.apps.splice(+b.dataset.i,1);render()}
+  else if(a==='addcash'){var v2=parseFloat(document.getElementById('c-add').value);if(!(v2>0)){toast('Entre un montant');return}S.saved=Math.round((S.saved+v2)*100)/100;gain(5,v2+' € épargnés');render()}
+  else if(a==='goal'){var g=parseFloat(document.getElementById('c-goal').value);if(g>0){S.goal=g;render()}}
+  else if(a==='chk'){var g2=b.dataset.g,i=+b.dataset.i;if(S[g2][i]){S[g2][i]=false;S.xp=Math.max(0,S.xp-20)}else{S[g2][i]=true;gain(20,'étape validée')}render()}
+  else if(a==='date'){var nv=prompt2();}
+  else if(a==='reset'){if(b.dataset.sure){S=JSON.parse(JSON.stringify(def));render()}else{b.dataset.sure='1';b.textContent='Confirmer : tout effacer';}}
+});
+document.addEventListener('change',function(e){var s=e.target.closest('[data-act="status"]');if(s){S.apps[+s.dataset.i].st=s.value;save()}
+  var d=e.target.closest('#target-date');if(d&&d.value){S.target=d.value;render()}});
+
+function prompt2(){
+  var app=document.getElementById('app');
+  if(document.getElementById('target-date'))return;
+  var box=document.createElement('div');box.className='card';
+  box.innerHTML='<label for="target-date">Date de départ visée</label><input id="target-date" type="date" value="'+S.target+'">';
+  app.insertBefore(box,app.children[1]);
+  document.getElementById('target-date').focus();
+}
+render();
+})();
+</script>
+</body>
+</html>
